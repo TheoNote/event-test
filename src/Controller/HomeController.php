@@ -13,7 +13,6 @@ class HomeController
 {
     public function __invoke(Environment $twig): Response
     {
-        $name = 'A';
 
         return new Response($twig->render('home.html.twig', [
 

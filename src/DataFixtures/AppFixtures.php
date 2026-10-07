@@ -8,6 +8,7 @@ use App\Entity\Registration;
 use App\Entity\User;
 use App\Enum\EventStatus;
 use App\Enum\RegistrationStatus;
+use App\Enum\RoleUser;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\MakerBundle\EventRegistry;
@@ -21,10 +22,10 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $this->user($manager, 'Max', 'maxencevast@gmail.com', 'azerty', ['ROLE_USER','ROLE_ADMIN']);
-        $organizer = $this->user($manager, 'organizer', 'organizer@eventhub.test', 'azerty', ['ROLE_ORGANIZER']);
-        $this->user($manager, 'admin', 'admin@eventhub.test', 'azerty', ['ROLE_ADMIN']);
-        $user = $this->user($manager, 'user', 'user@eventhub.test', 'azerty', ['ROLE_USER']);
+        $this->user($manager, 'Max', 'maxencevast@gmail.com', 'azerty', [RoleUser::User,RoleUser::Admin]);
+        $organizer = $this->user($manager, 'organizer', 'organizer@eventhub.test', 'azerty', [RoleUser::Organizer]);
+        $this->user($manager, 'admin', 'admin@eventhub.test', 'azerty', [RoleUser::Admin]);
+        $user = $this->user($manager, 'user', 'user@eventhub.test', 'azerty', [RoleUser::User]);
 
         $CategoryName = ['Sport', 'Class', 'Competition', 'Video'];
 

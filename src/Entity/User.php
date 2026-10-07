@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 
+use App\Enum\RoleUser;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -39,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Column(type: 'json')]
     #[Assert\NotBlank]
-    private array $roles = ['ROLE_USER'];
+    private array $roles = [RoleUser::User];
 
     #[Column(type: Types::DATETIME_IMMUTABLE, nullable: false)]
     private \DateTimeImmutable $createdAt;

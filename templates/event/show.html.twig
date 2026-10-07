@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ event.title }}
+{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">{{ event.title }}</h2>
+            </div>
+
+            <div class="card-body">
+            <span class="badge bg-info mb-3">
+                {{ event.category.name }}
+            </span>
+
+                <p class="card-text">
+                    {{ event.description }}
+                </p>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            <strong>📅 Début :</strong><br>
+                            {{ event.startAt|date('d/m/Y à H:i') }}
+                        </p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p>
+                            <strong>🏁 Fin :</strong><br>
+                            {{ event.endAt|date('d/m/Y à H:i') }}
+                        </p>
+                    </div>
+                </div>
+
+                <p>
+                    <strong>👥 Capacité :</strong>
+                    {{ event.capacity }} participants
+                </p>
+
+                <p>
+                    <strong>🎤 Organisateur :</strong>
+                    {{ event.organizer.username }}
+                </p>
+            </div>
+
+            <div class="card-footer text-end">
+                <a href="
+                {{ path('list-events') }}">
+                Retour à la liste
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 #[AsController]
-#[Route(path: '/nos-evenement', name: 'list-event')]
+#[Route(path: '/nos-evenement', name: 'list-events')]
 class ListEventController
 {
     public function __invoke(Environment $twig, EventRepository $eventRepository): Response
@@ -18,5 +18,4 @@ class ListEventController
             'events' => $eventRepository->findEventPublished(),
         ]), Response::HTTP_OK);
     }
-
 }

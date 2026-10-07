@@ -39,4 +39,14 @@ class EventRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function findEventBySlug(string $slug): ?Event
+    {
+        $query = $this->createQueryBuilder('e')
+            ->andWhere('e.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->andWhere('e.status = :status')
+            ->setParameter('status', EventStatus::Published)
+            ->getQuery();
+        return $query->getOneOrNullResult();
+    }
 }

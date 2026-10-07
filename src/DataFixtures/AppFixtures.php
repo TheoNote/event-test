@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
         foreach ($CategoryName as $name)
         {
 
-            $slug = trim(strtolower(preg_replace('/[^a-z0-9]+/', '-', iconv('UTF-8', 'ASCII//TRANSLIT', $name))), '-');
+            $slug = trim(strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', iconv('UTF-8', 'ASCII//TRANSLIT', $name))), '-');
 
 
             $category = (new Category());

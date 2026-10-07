@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Registration;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class RegistrationRepository extends ServiceEntityRepository

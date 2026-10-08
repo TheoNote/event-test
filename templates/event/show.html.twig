@@ -49,11 +49,16 @@
                 </p>
             </div>
 
-            <div class="card-footer text-end">
+            <div class="card-footer d-flex justify-content-between align-items-center">
                 <a href="
                 {{ path('list-events') }}">
-                Retour à la liste
+                    Retour à la liste
                 </a>
+                {% if is_granted('ROLE_ADMIN') or (app.user and app.user.id == event.organizer.id) %}
+                    <a href="{{ path('edit-event',{'slug': event.slug}) }}" class="btn btn-warning">
+                        Modifier l'événement
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>

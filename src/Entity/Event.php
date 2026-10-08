@@ -29,8 +29,8 @@ class Event
     #[Assert\NotBlank, Assert\Type('string')]
     private string $title;
 
-    #[Column(type: 'string', length: 100, unique: true)]
-    #[Assert\NotBlank, Assert\Type('string')]
+    #[Column(type: 'string', length: 100, unique: true, nullable: false)]
+    #[Assert\Type('string')]
     private string $slug;
 
     #[Column(type: 'text')]

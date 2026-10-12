@@ -24,6 +24,7 @@ use Twig\Environment;
 
 #[AsController]
 #[IsGranted('IS_AUTHENTICATED')]
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN") or is_granted("ROLE_ORGANIZER")'))]
 #[Route('/Organisateur',name: 'list-organizer-event')]
 class ListOrganizerEventController
 {

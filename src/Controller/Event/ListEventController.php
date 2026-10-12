@@ -15,7 +15,7 @@ class ListEventController
     public function __invoke(Environment $twig, EventRepository $eventRepository): Response
     {
         return new Response($twig->render('event/index.html.twig', [
-            'events' => $eventRepository->findEventPublished(),
+            'events' => $eventRepository->findEventsPublished(),
         ]), Response::HTTP_OK);
     }
 }

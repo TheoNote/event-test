@@ -44,7 +44,9 @@
                         </p>
                     {% endif %}
 
-                    {% if event.status == constant('App\\Enum\\EventStatus::Published') %}
+                    {% if event.status == constant('App\\Enum\\EventStatus::Published')
+                        or event.organizer == app.user
+                        or is_granted('ROLE_ADMIN') %}
                     <div class="mt-auto">
                         <a href = "{{ path('show-event', {slug: event.slug}) }}"
                         class="btn btn-outline-primary w-100">

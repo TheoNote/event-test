@@ -17,7 +17,7 @@ class HomeController
 
         return new Response($twig->render('home.html.twig',
         [
-            'events'=> $eventRepository->findEventPublished(),
+            'events'=> $eventRepository->findEventsPublished(),
         ]), Response::HTTP_OK);
     }
 }

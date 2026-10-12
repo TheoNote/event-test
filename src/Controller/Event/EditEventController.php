@@ -32,7 +32,7 @@ class EditEventController
         {
             throw new NotFoundHttpException('Evénement introuvable.');
         }
-        if (!($security->isGranted('ROLE_ADMIN') || $event->getOrganizer()->getId() === $security->getUser()->getId())){
+        if (!   ($security->isGranted('ROLE_ADMIN') || $event->getOrganizer()->getId() === $security->getUser()->getId())){
             throw new AccessDeniedHttpException("Accès non autorisé");
         }
 

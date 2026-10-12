@@ -56,8 +56,8 @@ class Event
     #[ManyToOne(targetEntity: Category::class, inversedBy: 'events')]
     private Category $category;
 
-    #[OneToMany(targetEntity: Registration::class, mappedBy: 'user')]
-    private Collection $Registrations;
+    #[OneToMany(targetEntity: Registration::class, mappedBy: 'event')]
+    private ?Collection  $Registrations;
 
     #[Assert\Callback]
     public function validateDates(ExecutionContextInterface $context, mixed $payload): void

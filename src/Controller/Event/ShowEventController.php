@@ -2,7 +2,9 @@
 
 namespace App\Controller\Event;
 
+use App\Enum\RegistrationStatus;
 use App\Repository\EventRepository;
+use phpDocumentor\Reflection\Types\Array_;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -12,8 +14,16 @@ class ShowEventController
 {
     public function __invoke(string $slug, Environment $twig, EventRepository $eventRepository): Response
     {
+        $event =$eventRepository->findEventBySlug($slug);
+        $registrations = [];
+        foreach ($event->getRegistrations() as $registration)
+        {
+            if ($registration->getStatus() == RegistrationStatus::Confirmed)
+                $registrations[] = $registration;
+        }
         return new Response($twig->render('event/show.html.twig', [
-            'event' => $eventRepository->findEventBySlug($slug),
+            'event' => $event,
+            'registrations' => $registrations,
         ]), Response::HTTP_OK);
     }
 }

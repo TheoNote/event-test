@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Event;
 use App\Entity\Registration;
 use App\Entity\User;
 use App\Enum\RegistrationStatus;
@@ -52,5 +53,17 @@ class RegistrationRepository extends ServiceEntityRepository
             ]);
 
         return array_map(fn (Registration $registration) => $registration->getEvent(), $query->getQuery()->getResult());
+    }
+
+    public function findRegistrationByUserEvent(User $user, Event $event): ?Registration
+    {
+        $query = $this->createQueryBuilder('r')
+            ->andWhere('r.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('r.event = :event')
+            ->setParameter('event', $event)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
     }
 }

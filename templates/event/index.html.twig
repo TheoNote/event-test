@@ -9,9 +9,11 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0">📅 Nos événements</h1>
-
-        <a href="{{ path('create-event') }}">➕ Créer un événement
+        {% if is_granted('ROLE_ORGANIZER')%}
+        <a href="{{ path('create-event') }}">
+            ➕ Créer un événement
         </a>
+        {% endif %}
     </div>
 
     <div class="row g-4">

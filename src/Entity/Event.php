@@ -29,8 +29,8 @@ class Event
     #[Assert\NotBlank, Assert\Type('string')]
     private string $title;
 
-    #[Column(type: 'string', length: 100, unique: true)]
-    #[Assert\NotBlank, Assert\Type('string')]
+    #[Column(type: 'string', length: 100, unique: true, nullable: false)]
+    #[Assert\Type('string')]
     private string $slug;
 
     #[Column(type: 'text')]
@@ -56,8 +56,8 @@ class Event
     #[ManyToOne(targetEntity: Category::class, inversedBy: 'events')]
     private Category $category;
 
-    #[OneToMany(targetEntity: Registration::class, mappedBy: 'user')]
-    private Collection $Registrations;
+    #[OneToMany(targetEntity: Registration::class, mappedBy: 'event')]
+    private ?Collection  $Registrations;
 
     #[Assert\Callback]
     public function validateDates(ExecutionContextInterface $context, mixed $payload): void

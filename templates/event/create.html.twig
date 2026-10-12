@@ -1,12 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ parent() }}Création d'un événement
+    {% if event is not defined %}
+    Création d'un événement
+    {% else %}
+    Modification d'un événement
+    {% endif %}
 {% endblock %}
 
 {% block body %}
     <div class="container mt-5">
+        {% if event is not defined %}
         <h2>Créer un événement</h2>
+        {% else %}
+        <h2>Modifier l'événement</h2>
+        {% endif %}
 
         {{ form_start(form, {'attr': {'class': 'form-event'}}) }}
 
@@ -23,7 +31,6 @@
             }) }}
             {{ form_errors(form.title) }}
         </div>
-
 
         <div class="form-group mb-3">
             {{ form_label(form.description, 'Description') }}
@@ -90,9 +97,21 @@
             </div>
         {% endif %}
 
-        <button type="submit" class="btn btn-primary">
-            Créer l'événement
-        </button>
+        <div>
+            {% if event is not defined %}
+                <button type="submit" class="btn btn-primary">
+                    Créer l'événement
+                </button>
+            {% else %}
+                <button type="submit" class="btn btn-warning mb-2">
+                    Enregistrer les modifications
+                </button>
+                <br>
+                <a href="{{ path('list-events') }}">
+                    Annuler
+                </a>
+            {% endif %}
+        </div>
 
         {{ form_end(form) }}
     </div>

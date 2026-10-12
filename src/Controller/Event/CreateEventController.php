@@ -3,39 +3,42 @@
 namespace App\Controller\Event;
 use App\Entity\Event;
 use App\Entity\User;
-use App\Form\Event\EventType;
+use App\Form\User\EventType;
 use App\Repository\EventRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\EventService;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Twig\Environment;
 
 #[AsController]
-#[Route(path: '/event', name: 'create-event', methods: ['GET', 'POST'])]
+#[IsGranted('IS_AUTHENTICATED')]
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN") or is_granted("ROLE_ORGANIZER")'))]
+#[Route(path: '/cree-un-evenement', name: 'create-event', methods: ['GET', 'POST'])]
 class CreateEventController
 {
-    public function __invoke(Environment $twig, Request $request,EventRepository $eventRepository, FormFactoryInterface $formFactory, Security $security): Response
+    public function __invoke(EventService $eventService ,Environment $twig, Request $request,EventRepository $eventRepository, FormFactoryInterface $formFactory, Security $security, RouterInterface $router, SluggerInterface $slugger): Response
     {
         $event = new Event();
-        $event->setSlug("a");
         $form = $formFactory->create(EventType::class, $event);
         $user = $security->getUser();
 
         $form->handleRequest($request);
         try {
             if ($form->isSubmitted() && $form->isValid() && $user instanceof User) {
-
-                $title = $event->getTitle();
-                $slug = trim(strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', iconv('UTF-8', 'ASCII//TRANSLIT', $title))), '-');
-                $event->setSlug($slug);
-                $event->setOrganizer($user);
-
-                $event = $form->getData();
-                $eventRepository->persistAndSave($event);
+                $eventService->create(
+                    $event,
+                    $user
+                );
+                return new RedirectResponse($router->generate('list-events'));
             }
         } catch (LogicException $e){
 

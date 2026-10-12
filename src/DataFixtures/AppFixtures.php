@@ -59,7 +59,7 @@ class AppFixtures extends Fixture
             $event->setStatus($randomStatus);
             $event->setOrganizer($organizer);
             $event->setCategory($categorys[$i%count($categorys)]);;
-            $event->setCapacity(1);
+            $event->setCapacity($i*2);
 
             $manager->persist($event);
 

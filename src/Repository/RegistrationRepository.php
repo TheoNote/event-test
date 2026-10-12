@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Event;
 use App\Entity\Registration;
+use App\Entity\User;
+use App\Enum\RegistrationStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,5 +30,40 @@ class RegistrationRepository extends ServiceEntityRepository
     {
         $this->persist($user);
         $this->save($user);
+    }
+
+    public function findRegistrationByUser(User $user): ?array
+    {
+        $query = $this->createQueryBuilder('r')
+            ->andWhere('r.user = :user')
+            ->setParameter('user', $user);
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findEventByUser(User $user): ?array
+    {
+        $query = $this->createQueryBuilder('r')
+            ->andWhere('r.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('r.status IN (:statuses)')
+            ->setParameter('statuses', [
+                RegistrationStatus::Confirmed,
+                RegistrationStatus::Waitlist,
+            ]);
+
+        return array_map(fn (Registration $registration) => $registration->getEvent(), $query->getQuery()->getResult());
+    }
+
+    public function findRegistrationByUserEvent(User $user, Event $event): ?Registration
+    {
+        $query = $this->createQueryBuilder('r')
+            ->andWhere('r.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('r.event = :event')
+            ->setParameter('event', $event)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
     }
 }

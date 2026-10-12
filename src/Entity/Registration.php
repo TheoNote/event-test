@@ -24,11 +24,11 @@ class Registration
 
     #[Id, Column(type: 'integer'), GeneratedValue]
     private ?int $id = null;
-    #[ManyToOne(targetEntity: User::class)]
+    #[ManyToOne(targetEntity: User::class, inversedBy: 'registrations')]
     #[JoinColumn(nullable: false)]
     private User $user;
 
-    #[ManyToOne(targetEntity: Event::class)]
+    #[ManyToOne(targetEntity: Event::class, inversedBy: 'registrations')]
     #[JoinColumn(nullable: false)]
     private Event $event;
 

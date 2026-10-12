@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Registration;
 use App\Entity\User;
+use App\Enum\RegistrationStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -43,7 +44,12 @@ class RegistrationRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('r')
             ->andWhere('r.user = :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $user)
+            ->andWhere('r.status IN (:statuses)')
+            ->setParameter('statuses', [
+                RegistrationStatus::Confirmed,
+                RegistrationStatus::Waitlist,
+            ]);
 
         return array_map(fn (Registration $registration) => $registration->getEvent(), $query->getQuery()->getResult());
     }

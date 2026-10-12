@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Registration;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,5 +28,23 @@ class RegistrationRepository extends ServiceEntityRepository
     {
         $this->persist($user);
         $this->save($user);
+    }
+
+    public function findRegistrationByUser(User $user): ?array
+    {
+        $query = $this->createQueryBuilder('r')
+            ->andWhere('r.user = :user')
+            ->setParameter('user', $user);
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findEventByUser(User $user): ?array
+    {
+        $query = $this->createQueryBuilder('r')
+            ->andWhere('r.user = :user')
+            ->setParameter('user', $user);
+
+        return array_map(fn (Registration $registration) => $registration->getEvent(), $query->getQuery()->getResult());
     }
 }

@@ -22,7 +22,7 @@
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="{{ path('list-events') }}">Événements</a>
                 {% if app.user %}
-                    <a class="nav-link" href="{#{{ path('account_registrations') }}#}">Mes inscriptions</a>
+                    <a class="nav-link" href="{{ path('list-register') }}">Mes inscriptions</a>
                     {% if is_granted('ROLE_ORGANIZER') %}
                         <a class="nav-link" href="{#{{ path('organizer_event_index') }}#}">Organisateur</a>
                     {% endif %}

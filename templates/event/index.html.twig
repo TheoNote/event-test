@@ -44,12 +44,14 @@
                         </p>
                     {% endif %}
 
+                    {% if event.status == constant('App\\Enum\\EventStatus::Published') %}
                     <div class="mt-auto">
                         <a href = "{{ path('show-event', {slug: event.slug}) }}"
                         class="btn btn-outline-primary w-100">
                         Voir les détails
                         </a>
                     </div>
+                    {% endif %}
 
                 </div>
 

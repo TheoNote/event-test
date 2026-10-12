@@ -2,6 +2,7 @@
 
 namespace App\Controller\Event;
 
+use App\Entity\Registration;
 use App\Enum\RegistrationStatus;
 use App\Repository\EventRepository;
 use phpDocumentor\Reflection\Types\Array_;
@@ -15,15 +16,15 @@ class ShowEventController
     public function __invoke(string $slug, Environment $twig, EventRepository $eventRepository): Response
     {
         $event =$eventRepository->findEventBySlug($slug);
-        $registrations = [];
-        foreach ($event->getRegistrations() as $registration)
-        {
-            if ($registration->getStatus() == RegistrationStatus::Confirmed)
-                $registrations[] = $registration;
-        }
+        $confirmedCount = $event->getRegistrations()
+            ->filter(
+                fn(Registration $registration) =>
+                    $registration->getStatus() === RegistrationStatus::Confirmed
+            )
+            ->count();
         return new Response($twig->render('event/show.html.twig', [
             'event' => $event,
-            'registrations' => $registrations,
+            'confirmedCount' => $confirmedCount,
         ]), Response::HTTP_OK);
     }
 }

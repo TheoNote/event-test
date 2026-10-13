@@ -5,6 +5,7 @@ namespace App\Controller\Event;
 use App\Form\User\EventType;
 use App\Repository\EventRepository;
 use App\Service\EventService;
+use App\Service\FileUploaderService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -26,7 +27,7 @@ use Twig\Environment;
 #[Route('/modifier-un-event/{slug}',name: 'edit-event')]
 class EditEventController
 {
-    public function __invoke(string $slug, EventService $eventService, Environment $twig, Request $request,EventRepository $eventRepository, FormFactoryInterface $formFactory, Security $security, RouterInterface $router, SluggerInterface $slugger): Response
+    public function __invoke(string $slug, FileUploaderService $fileUploaderService, EventService $eventService, Environment $twig, Request $request,EventRepository $eventRepository, FormFactoryInterface $formFactory, Security $security, RouterInterface $router, SluggerInterface $slugger): Response
     {
         $event = $eventRepository->findEventBySlug($slug);
         if (null === $event)
@@ -41,7 +42,7 @@ class EditEventController
         $form->handleRequest($request);
         try {
             if ($form->isSubmitted() && $form->isValid()) {
-                $eventService->edit($event);
+                $eventService->edit($event, $form->get('image')->getData());
 
                 //return new RedirectResponse($router->generate('list-events'));
                 return new RedirectResponse($router->generate('edit-event',['slug' => $event->getSlug()]));

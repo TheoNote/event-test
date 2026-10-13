@@ -12,6 +12,16 @@
             </div>
 
             <div class="card-body">
+                {% if event.imageDir %}
+                    <div class="text-center mb-4">
+                        <img
+                            src="{{ asset('uploads/' ~ event.imageDir) }}"
+                            alt="{{ event.title }}"
+                            class="img-fluid rounded shadow"
+                            style="max-height: 400px;"
+                        >
+                    </div>
+                {% endif %}
             <span class="badge bg-info mb-3">
                 {{ event.category.name }}
             </span>

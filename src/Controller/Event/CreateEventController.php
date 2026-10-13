@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\User\EventType;
 use App\Repository\EventRepository;
 use App\Service\EventService;
+use App\Service\FileUploaderService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -25,7 +26,7 @@ use Twig\Environment;
 #[Route(path: '/cree-un-evenement', name: 'create-event', methods: ['GET', 'POST'])]
 class CreateEventController
 {
-    public function __invoke(EventService $eventService ,Environment $twig, Request $request,EventRepository $eventRepository, FormFactoryInterface $formFactory, Security $security, RouterInterface $router, SluggerInterface $slugger): Response
+    public function __invoke(FileUploaderService $fileUploaderService ,EventService $eventService ,Environment $twig, Request $request,EventRepository $eventRepository, FormFactoryInterface $formFactory, Security $security, RouterInterface $router, SluggerInterface $slugger): Response
     {
         $event = new Event();
         $form = $formFactory->create(EventType::class, $event);
@@ -36,7 +37,8 @@ class CreateEventController
             if ($form->isSubmitted() && $form->isValid() && $user instanceof User) {
                 $eventService->create(
                     $event,
-                    $user
+                    $user,
+                    $form->get('image')->getData()
                 );
                 return new RedirectResponse($router->generate('list-events'));
             }

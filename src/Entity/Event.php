@@ -47,6 +47,10 @@ class Event
     #[Assert\NotBlank, Assert\Type('integer')]
     private int $capacity;
 
+    #[Column(type: 'string', length: 100, nullable: true)]
+    #[Assert\Type('string')]
+    private ?string $imageDir;
+
     #[Column(enumType: EventStatus::class)]
     private EventStatus $status;
 
@@ -156,6 +160,16 @@ class Event
     public function getRegistrations(): Collection
     {
         return $this->Registrations;
+    }
+
+    public function setImageDir(string $imageDir): void
+    {
+        $this->imageDir = $imageDir;
+    }
+
+    public function getImageDir(): string
+    {
+        return $this->imageDir;
     }
 
 }

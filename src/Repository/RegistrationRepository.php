@@ -16,20 +16,26 @@ class RegistrationRepository extends ServiceEntityRepository
         parent::__construct($registry, Registration::class);
 
     }
-    public function save(?Registration $user = null)
+    public function save(?Registration $registration = null)
     {
-        $this->getEntityManager()->flush($user);
+        $this->getEntityManager()->flush($registration);
     }
 
-    public function persist(?Registration $user = null)
+    public function persist(?Registration $registration = null)
     {
-        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->persist($registration);
     }
 
-    public function persistAndSave(?Registration $user = null)
+    public function persistAndSave(?Registration $registration = null)
     {
-        $this->persist($user);
-        $this->save($user);
+        $this->persist($registration);
+        $this->save($registration);
+    }
+
+    public function delete(?Registration $registration = null): void
+    {
+        $this->getEntityManager()->remove($registration);
+        $this->getEntityManager()->flush();
     }
 
     public function findRegistrationByUser(User $user): ?array

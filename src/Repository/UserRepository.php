@@ -28,4 +28,19 @@ class UserRepository extends ServiceEntityRepository
         $this->persist($user);
         $this->save($user);
     }
+
+    public function delete(?User $user = null): void
+    {
+        $this->getEntityManager()->remove($user);
+        $this->getEntityManager()->flush();
+    }
+
+    public function findUserByEmail(string $email): ?User
+    {
+        $query = $this->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email);
+
+        return $query->getQuery()->getOneOrNullResult();
+    }
 }

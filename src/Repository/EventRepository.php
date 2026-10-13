@@ -15,20 +15,26 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
 
     }
-    public function save(?Event $user = null)
+    public function save(?Event $event = null)
     {
-        $this->getEntityManager()->flush($user);
+        $this->getEntityManager()->flush($event);
     }
 
-    public function persist(?Event $user = null)
+    public function persist(?Event $event = null)
     {
-        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->persist($event);
     }
 
-    public function persistAndSave(?Event $user = null)
+    public function persistAndSave(?Event $event = null)
     {
-        $this->persist($user);
-        $this->save($user);
+        $this->persist($event);
+        $this->save($event);
+    }
+
+    public function delete(?Event $event = null): void
+    {
+        $this->getEntityManager()->remove($event);
+        $this->getEntityManager()->flush();
     }
 
     public function findEventsPublished(): array

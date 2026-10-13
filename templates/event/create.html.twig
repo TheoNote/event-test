@@ -97,6 +97,16 @@
             </div>
         {% endif %}
 
+        <div class="form-group mb-3">
+            {{ form_label(form.image, 'Image') }}
+            {{ form_widget(form.image, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+            {{ form_errors(form.image) }}
+        </div>
+
         <div>
             {% if event is not defined %}
                 <button type="submit" class="btn btn-primary">
